@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+
+{% block title %}Detection Results - PoultryCare{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Results Header -->
+            <div class="custom-card mb-4">
+                <div class="card-body text-center py-5">
+                    <div class="row align-items-center">
+                        <div class="col-md-4">
+                            <img src="{{ image_url }}" alt="Analyzed Image" class="img-fluid rounded shadow" style="max-height: 200px;">
+                        </div>
+                        <div class="col-md-8">
+                            <h1 class="display-4 mb-3">{{ prediction.class.replace('_', ' ').title() }}</h1>
+                            <div class="confidence-badge mb-3">
+                                <span class="badge {% if prediction.confidence >= 0.8 %}bg-success{% elif prediction.confidence >= 0.6 %}bg-warning{% else %}bg-danger{% endif %} fs-6 p-3">
+                                    Confidence: {{ "%.2f"|format(prediction.confidence * 100) }}%
+                                </span>
+                            </div>
+                            <p class="lead text-muted">
+                                {% if prediction.confidence >= 0.8 %}
+                                    High confidence detection
+                                {% elif prediction.confidence >= 0.6 %}
+                                    Moderate confidence detection
+                                {% else %}
+                                    Low confidence - please verify manually
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Confidence Distribution -->
+                <div class="col-md-6">
+                    <div class="custom-card h-100">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-chart-bar"></i> Confidence Distribution</h5>
+                        </div>
+                        <div class="card-body">
+                            {% for class_name in class_names %}
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="text-capitalize">{{ class_name.replace('_', ' ') }}</span>
+                                    <span class="fw-bold">{{ "%.1f"|format(prediction.all_predictions[loop.index0] * 100) }}%</span>
+                                </div>
+                                <div class="confidence-bar">
+                                    <div class="confidence-fill {% if class_name == prediction.class %}bg-primary{% endif %}" 
+                                         style="width: {{ prediction.all_predictions[loop.index0] * 100 }}%"></div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="col-md-6">
+                    <div class="custom-card h-100">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-rocket"></i> Quick Actions</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-grid gap-3">
+                                <a href="{{ url_for('remedies') }}#{{ prediction.class }}" class="btn btn-success btn-lg">
+                                    <i class="fas fa-book-medical"></i> View Remedies & Prevention
+                                </a>
+                                <a href="{{ url_for('detect') }}" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-camera"></i> Analyze Another Image
+                                </a>
+                                <a href="{{ url_for('dashboard') }}" class="btn btn-outline-primary btn-lg">
+                                    <i class="fas fa-history"></i> View Detection History
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Remedies Preview -->
+            <div class="custom-card mt-4">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-first-aid"></i> Recommended Actions for {{ remedies.name }}</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Symptoms -->
+                        <div class="col-md-6">
+                            <div class="remedy-card p-3 mb-3">
+                                <h6 class="text-danger"><i class="fas fa-exclamation-triangle"></i> Common Symptoms:</h6>
+                                <ul class="list-unstyled">
+                                    {% for symptom in remedies.symptoms %}
+                                    <li><i class="fas fa-circle text-danger small me-2"></i>{{ symptom }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Prevention -->
+                        <div class="col-md-6">
+                            <div class="remedy-card p-3 mb-3">
+                                <h6 class="text-success"><i class="fas fa-shield-alt"></i> Prevention Measures:</h6>
+                                <ul class="list-unstyled">
+                                    {% for prevention in remedies.prevention %}
+                                    <li><i class="fas fa-check-circle text-success small me-2"></i>{{ prevention }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Treatment -->
+                    <div class="remedy-card p-3">
+                        <h6 class="text-primary"><i class="fas fa-stethoscope"></i> Treatment Recommendations:</h6>
+                        <ul class="list-unstyled">
+                            {% for treatment in remedies.treatment %}
+                            <li><i class="fas fa-plus-circle text-primary small me-2"></i>{{ treatment }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <a href="{{ url_for('remedies') }}#{{ prediction.class }}" class="btn btn-primary">
+                            <i class="fas fa-book-medical"></i> View Complete Guide
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Important Notice -->
+            <div class="alert alert-warning mt-4">
+                <h6><i class="fas fa-exclamation-circle"></i> Important Notice</h6>
+                <p class="mb-0">
+                    This AI-powered detection is for informational purposes only. Always consult with a qualified 
+                    veterinarian for professional diagnosis and treatment recommendations. The accuracy of predictions 
+                    may vary based on image quality and disease presentation.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.confidence-badge .badge {
+    font-size: 1.1rem !important;
+    padding: 0.75rem 1.5rem !important;
+}
+.confidence-bar {
+    height: 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+}
+.confidence-fill {
+    height: 100%;
+    background: var(--primary-color);
+    border-radius: 4px;
+    transition: width 1s ease-in-out;
+}
+.confidence-fill.bg-primary {
+    background: var(--gradient-primary) !important;
+}
+.remedy-card {
+    background: rgba(255, 107, 53, 0.05);
+    border-radius: 10px;
+}
+</style>
+
+<script>
+// Animate confidence bars on page load
+document.addEventListener('DOMContentLoaded', function() {
+    const confidenceBars = document.querySelectorAll('.confidence-fill');
+    confidenceBars.forEach(bar => {
+        const width = bar.style.width;
+        bar.style.width = '0';
+        setTimeout(() => {
+            bar.style.width = width;
+        }, 500);
+    });
+});
+</script>
+{% endblock %}

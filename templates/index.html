@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}Home - PoultryCare{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h1>Protect Your Poultry with AI</h1>
+                <p class="lead">Advanced disease detection and prevention system for healthier poultry farming</p>
+                {% if not session.user_id %}
+                <a href="{{ url_for('register') }}" class="btn btn-success btn-lg me-3">
+                    <i class="fas fa-user-plus"></i> Get Started
+                </a>
+                <a href="{{ url_for('about') }}" class="btn btn-outline-light btn-lg">
+                    <i class="fas fa-info-circle"></i> Learn More
+                </a>
+                {% else %}
+                <a href="{{ url_for('detect') }}" class="btn btn-success btn-lg me-3">
+                    <i class="fas fa-camera"></i> Detect Disease
+                </a>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-outline-light btn-lg">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="container mb-5">
+    <div class="row text-center mb-5">
+        <div class="col-lg-8 mx-auto">
+            <h2 class="display-4 mb-4">Why Choose PoultryCare?</h2>
+            <p class="lead text-muted">Comprehensive solutions for modern poultry farming</p>
+        </div>
+    </div>
+    
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="custom-card h-100 text-center p-4">
+                <div class="feature-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h4>AI-Powered Detection</h4>
+                <p>Advanced machine learning algorithms accurately identify poultry diseases from images</p>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="custom-card h-100 text-center p-4">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h4>Prevention & Remedies</h4>
+                <p>Get expert recommendations for disease prevention and treatment strategies</p>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="custom-card h-100 text-center p-4">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h4>Health Monitoring</h4>
+                <p>Track your poultry health history and monitor disease patterns over time</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section class="bg-light py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-4 mb-4">How It Works</h2>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-3 text-center">
+                <div class="step-number">1</div>
+                <h5>Upload Image</h5>
+                <p>Take a clear photo of your poultry</p>
+            </div>
+            <div class="col-md-3 text-center">
+                <div class="step-number">2</div>
+                <h5>AI Analysis</h5>
+                <p>Our AI analyzes the image for diseases</p>
+            </div>
+            <div class="col-md-3 text-center">
+                <div class="step-number">3</div>
+                <h5>Get Results</h5>
+                <p>Receive instant diagnosis with confidence scores</p>
+            </div>
+            <div class="col-md-3 text-center">
+                <div class="step-number">4</div>
+                <h5>Take Action</h5>
+                <p>Follow recommended remedies and prevention tips</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

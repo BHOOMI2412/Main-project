@@ -1,0 +1,225 @@
+{% extends "base.html" %}
+
+{% block title %}Remedies & Prevention - PoultryCare{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Header -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="custom-card text-center p-5">
+                <h1 class="display-4 mb-3">🐔 Poultry Health Guide</h1>
+                <p class="lead text-muted">Comprehensive remedies and prevention strategies for common poultry diseases</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Disease Remedies -->
+    {% for disease_key, disease in remedies.items() %}
+    <div class="row mb-5" id="{{ disease_key }}">
+        <div class="col-12">
+            <div class="custom-card">
+                <div class="card-header {% if disease_key == 'healthy' %}bg-success{% else %}bg-primary{% endif %}">
+                    <h3 class="mb-0 text-white">
+                        <i class="fas {% if disease_key == 'healthy' %}fa-heart{% else %}fa-first-aid{% endif %} me-2"></i>
+                        {{ disease.name }}
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Symptoms -->
+                        <div class="col-md-4">
+                            <div class="remedy-section">
+                                <h5 class="text-danger mb-3">
+                                    <i class="fas fa-exclamation-triangle"></i> Symptoms
+                                </h5>
+                                <ul class="list-group">
+                                    {% for symptom in disease.symptoms %}
+                                    <li class="list-group-item d-flex align-items-start">
+                                        <i class="fas fa-circle text-danger mt-1 me-2 small"></i>
+                                        <span>{{ symptom }}</span>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Prevention -->
+                        <div class="col-md-4">
+                            <div class="remedy-section">
+                                <h5 class="text-success mb-3">
+                                    <i class="fas fa-shield-alt"></i> Prevention
+                                </h5>
+                                <ul class="list-group">
+                                    {% for prevention in disease.prevention %}
+                                    <li class="list-group-item d-flex align-items-start">
+                                        <i class="fas fa-check-circle text-success mt-1 me-2 small"></i>
+                                        <span>{{ prevention }}</span>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Treatment -->
+                        <div class="col-md-4">
+                            <div class="remedy-section">
+                                <h5 class="text-primary mb-3">
+                                    <i class="fas fa-stethoscope"></i> Treatment
+                                </h5>
+                                <ul class="list-group">
+                                    {% for treatment in disease.treatment %}
+                                    <li class="list-group-item d-flex align-items-start">
+                                        <i class="fas fa-plus-circle text-primary mt-1 me-2 small"></i>
+                                        <span>{{ treatment }}</span>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Additional Notes -->
+                    {% if disease_key != 'healthy' %}
+                    <div class="alert alert-warning mt-4">
+                        <h6><i class="fas fa-lightbulb"></i> Important Recommendations</h6>
+                        <ul class="mb-0">
+                            <li>Isolate affected birds immediately to prevent spread</li>
+                            <li>Consult with a veterinarian for proper diagnosis</li>
+                            <li>Maintain strict biosecurity measures</li>
+                            <li>Keep detailed health records for your flock</li>
+                        </ul>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-success mt-4">
+                        <h6><i class="fas fa-check-circle"></i> Maintaining Health</h6>
+                        <ul class="mb-0">
+                            <li>Continue regular health monitoring</li>
+                            <li>Maintain vaccination schedules</li>
+                            <li>Provide balanced nutrition and clean water</li>
+                            <li>Ensure proper housing and ventilation</li>
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <!-- General Poultry Care Tips -->
+    <div class="row">
+        <div class="col-12">
+            <div class="custom-card">
+                <div class="card-header bg-success">
+                    <h3 class="mb-0 text-white">
+                        <i class="fas fa-seedling"></i> General Poultry Care Best Practices
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="care-tip">
+                                <h5 class="text-success"><i class="fas fa-home"></i> Housing Management</h5>
+                                <ul>
+                                    <li>Provide adequate space (2-3 sq ft per bird)</li>
+                                    <li>Ensure proper ventilation and temperature control</li>
+                                    <li>Maintain clean and dry bedding</li>
+                                    <li>Regular cleaning and disinfection</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="care-tip">
+                                <h5 class="text-success"><i class="fas fa-utensils"></i> Nutrition & Feeding</h5>
+                                <ul>
+                                    <li>Provide balanced commercial feed</li>
+                                    <li>Ensure constant access to clean water</li>
+                                    <li>Supplement with greens and grains</li>
+                                    <li>Provide grit for digestion</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="care-tip">
+                                <h5 class="text-success"><i class="fas fa-shield-virus"></i> Biosecurity</h5>
+                                <ul>
+                                    <li>Limit visitor access to poultry areas</li>
+                                    <li>Use foot baths and disinfectants</li>
+                                    <li>Control wild bird and rodent access</li>
+                                    <li>Quarantine new birds for 2-3 weeks</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="care-tip">
+                                <h5 class="text-success"><i class="fas fa-heartbeat"></i> Health Monitoring</h5>
+                                <ul>
+                                    <li>Daily observation of bird behavior</li>
+                                    <li>Regular weight checks</li>
+                                    <li>Monitor feed and water consumption</li>
+                                    <li>Keep vaccination records updated</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Emergency Contact -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="custom-card text-center">
+                <div class="card-body py-4">
+                    <h4 class="text-danger mb-3">
+                        <i class="fas fa-phone-alt"></i> Emergency Contact
+                    </h4>
+                    <p class="lead mb-3">
+                        For immediate assistance with sick poultry, contact your local veterinarian or agricultural extension officer.
+                    </p>
+                    <div class="alert alert-danger">
+                        <strong>Remember:</strong> Early detection and professional intervention are crucial for successful treatment of poultry diseases.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.remedy-section {
+    height: 100%;
+}
+.remedy-section .list-group-item {
+    border: none;
+    border-left: 3px solid transparent;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.7);
+    transition: all 0.3s ease;
+}
+.remedy-section .list-group-item:hover {
+    background: white;
+    border-left-color: var(--primary-color);
+    transform: translateX(5px);
+}
+.care-tip {
+    background: rgba(40, 167, 69, 0.05);
+    padding: 1.5rem;
+    border-radius: 15px;
+    height: 100%;
+    border-left: 4px solid var(--secondary-color);
+}
+.care-tip ul {
+    margin-bottom: 0;
+}
+.care-tip li {
+    margin-bottom: 0.5rem;
+}
+</style>
+{% endblock %}

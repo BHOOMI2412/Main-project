@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+
+{% block title %}Detect Disease - PoultryCare{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="custom-card">
+                <div class="card-header text-center">
+                    <h3 class="mb-0"><i class="fas fa-camera"></i> Detect Poultry Disease</h3>
+                </div>
+                <div class="card-body p-4">
+                    <!-- Upload Area -->
+                    <form id="detectForm" method="POST" enctype="multipart/form-data">
+                        <input type="file" id="fileInput" name="file" accept="image/*" style="display: none;" required>
+                        
+                        <div class="upload-area mb-4" id="uploadArea">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <h4>Upload Poultry Image</h4>
+                            <p class="text-muted">Click to browse or drag and drop</p>
+                            <p class="text-muted small">Supported formats: JPG, PNG, JPEG | Max size: 16MB</p>
+                        </div>
+
+                        <!-- Image Preview -->
+                        <div id="imagePreview" class="text-center mb-4" style="display: none;">
+                            <img id="previewImage" src="#" alt="Preview" class="img-fluid rounded shadow" style="max-height: 300px;">
+                        </div>
+
+                        <!-- Instructions -->
+                        <div class="alert alert-info">
+                            <h6><i class="fas fa-info-circle"></i> Image Guidelines:</h6>
+                            <ul class="mb-0">
+                                <li>Ensure good lighting and clear focus</li>
+                                <li>Capture the entire bird or affected area</li>
+                                <li>Avoid blurry or dark images</li>
+                                <li>Multiple angles can improve accuracy</li>
+                            </ul>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg" id="detectBtn" disabled>
+                                <i class="fas fa-search"></i> Analyze Image
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Supported Diseases -->
+            <div class="custom-card mt-4">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-list"></i> Supported Disease Detection</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex align-items-center">
+                                    <i class="fas fa-check text-success me-3"></i>
+                                    Newcastle Disease
+                                </li>
+                                <li class="list-group-item d-flex align-items-center">
+                                    <i class="fas fa-check text-success me-3"></i>
+                                    coccidiosis disease
+                                </li>
+                                <li class="list-group-item d-flex align-items-center">
+                                    <i class="fas fa-check text-success me-3"></i>
+                                    salmonella disease
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex align-items-center">
+                                    <i class="fas fa-check text-success me-3"></i>
+                                    Healthy Bird Detection
+                                </li>
+                                <li class="list-group-item d-flex align-items-center">
+                                    <i class="fas fa-check text-success me-3"></i>
+                                    Common Poultry Diseases
+                                </li>
+                                <li class="list-group-item d-flex align-items-center">
+                                    <i class="fas fa-plus text-primary me-3"></i>
+                                    More diseases coming soon
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const fileInput = document.getElementById('fileInput');
+    const uploadArea = document.getElementById('uploadArea');
+    const previewImage = document.getElementById('previewImage');
+    const imagePreview = document.getElementById('imagePreview');
+    const detectBtn = document.getElementById('detectBtn');
+
+    // Upload area click handler
+    uploadArea.addEventListener('click', () => fileInput.click());
+
+    // File input change handler
+    fileInput.addEventListener('change', function(e) {
+        if (this.files && this.files[0]) {
+            const file = this.files[0];
+            
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                alert('Please select an image file (JPG, PNG, JPEG)');
+                return;
+            }
+
+            // Validate file size (16MB)
+            if (file.size > 16 * 1024 * 1024) {
+                alert('File size must be less than 16MB');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImage.src = e.target.result;
+                imagePreview.style.display = 'block';
+                detectBtn.disabled = false;
+                
+                // Update upload area text
+                uploadArea.innerHTML = `
+                    <i class="fas fa-check-circle text-success"></i>
+                    <h4>File Selected</h4>
+                    <p class="text-muted">${file.name}</p>
+                    <p class="text-muted small">Click to change image</p>
+                `;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Drag and drop handlers
+    uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.style.background = 'rgba(255, 107, 53, 0.2)';
+        uploadArea.style.borderColor = '#ff8c00';
+    });
+
+    uploadArea.addEventListener('dragleave', () => {
+        uploadArea.style.background = 'rgba(255, 107, 53, 0.05)';
+        uploadArea.style.borderColor = '#ff6b35';
+    });
+
+    uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.style.background = 'rgba(255, 107, 53, 0.05)';
+        uploadArea.style.borderColor = '#ff6b35';
+
+        if (e.dataTransfer.files.length) {
+            fileInput.files = e.dataTransfer.files;
+            fileInput.dispatchEvent(new Event('change'));
+        }
+    });
+});
+</script>
+{% endblock %}

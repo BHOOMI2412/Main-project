@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - PoultryCare{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Welcome Section -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="custom-card p-4">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h2 class="mb-2">Welcome back, {{ session.username }}! 👋</h2>
+                        <p class="text-muted mb-0">Monitor your poultry health and track disease detection history</p>
+                    </div>
+                    <div class="col-md-4 text-md-end">
+                        <a href="{{ url_for('detect') }}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-camera"></i> New Detection
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="row mb-5">
+        <div class="col-md-3">
+            <div class="custom-card text-center stat-card">
+                <div class="stat-number">{{ stats.total_detections }}</div>
+                <p>Total Detections</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="custom-card text-center stat-card">
+                <div class="stat-number">{{ stats.high_confidence }}</div>
+                <p>High Confidence</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="custom-card text-center stat-card">
+                <div class="stat-number">{{ stats.healthy_count }}</div>
+                <p>Healthy Birds</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="custom-card text-center stat-card">
+                <div class="stat-number">{{ stats.disease_count }}</div>
+                <p>Disease Cases</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Detections -->
+    <div class="row">
+        <div class="col-12">
+            <div class="custom-card">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="fas fa-history"></i> Recent Detections</h4>
+                </div>
+                <div class="card-body">
+                    {% if history %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Prediction</th>
+                                    <th>Confidence</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for detection in history %}
+                                <tr>
+                                    <td>
+                                        <img src="{{ url_for('static', filename='uploads/' + detection.image_path) }}" 
+                                             alt="Detection" class="rounded" style="width: 60px; height: 60px; object-fit: cover;">
+                                    </td>
+                                    <td>
+                                        <strong class="text-capitalize">{{ detection.predicted_class.replace('_', ' ') }}</strong>
+                                    </td>
+                                    <td>
+                                        <div class="progress" style="height: 20px; width: 120px;">
+                                            <div class="progress-bar {% if detection.confidence >= 0.8 %}bg-success{% elif detection.confidence >= 0.6 %}bg-warning{% else %}bg-danger{% endif %}" 
+                                                 role="progressbar" 
+                                                 style="width: {{ detection.confidence * 100 }}%">
+                                                {{ "%.1f"|format(detection.confidence * 100) }}%
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{ detection.timestamp[:16] }}</td>
+                                    <td>
+                                        <a href="{{ url_for('static', filename='uploads/' + detection.image_path) }}" 
+                                           target="_blank" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="{{ url_for('remedies') }}#{{ detection.predicted_class }}" 
+                                           class="btn btn-sm btn-outline-success">
+                                            <i class="fas fa-plus-circle"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                        <h4 class="text-muted">No detection history yet</h4>
+                        <p class="text-muted">Start by detecting diseases in your poultry images</p>
+                        <a href="{{ url_for('detect') }}" class="btn btn-primary">
+                            <i class="fas fa-camera"></i> Start Detection
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="custom-card text-center p-4 h-100">
+                <i class="fas fa-camera fa-3x text-primary mb-3"></i>
+                <h5>Detect Disease</h5>
+                <p class="text-muted">Upload poultry images for instant disease detection</p>
+                <a href="{{ url_for('detect') }}" class="btn btn-outline-primary">Start Detection</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="custom-card text-center p-4 h-100">
+                <i class="fas fa-book-medical fa-3x text-success mb-3"></i>
+                <h5>Learn Remedies</h5>
+                <p class="text-muted">Discover prevention and treatment strategies</p>
+                <a href="{{ url_for('remedies') }}" class="btn btn-outline-success">View Remedies</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="custom-card text-center p-4 h-100">
+                <i class="fas fa-chart-line fa-3x text-warning mb-3"></i>
+                <h5>Health Analytics</h5>
+                <p class="text-muted">Monitor your poultry health trends over time</p>
+                <a href="{{ url_for('about') }}" class="btn btn-outline-warning">Learn More</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.progress {
+    border-radius: 10px;
+    overflow: hidden;
+}
+.progress-bar {
+    border-radius: 10px;
+}
+.table img {
+    border: 2px solid #e9ecef;
+}
+</style>
+{% endblock %}

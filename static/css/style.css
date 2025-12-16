@@ -1,0 +1,294 @@
+:root {
+    --primary-color: #ff6b35;
+    --secondary-color: #28a745;
+    --accent-color: #ffa726;
+    --dark-color: #2c3e50;
+    --light-color: #f8f9fa;
+    --gradient-primary: linear-gradient(135deg, #ff6b35, #ffa726);
+    --gradient-secondary: linear-gradient(135deg, #28a745, #7cb342);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #fdf6e3 0%, #f8f9fa 100%);
+    min-height: 100vh;
+}
+
+/* Navigation */
+.custom-navbar {
+    background: var(--gradient-primary) !important;
+    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+/* Buttons */
+.btn-primary {
+    background: var(--gradient-primary);
+    border: none;
+    border-radius: 25px;
+    padding: 10px 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+}
+
+.btn-success {
+    background: var(--gradient-secondary);
+    border: none;
+    border-radius: 25px;
+    padding: 10px 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+}
+
+/* Cards */
+.custom-card {
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    background: white;
+    overflow: hidden;
+}
+
+.custom-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    padding: 20px;
+    font-weight: 600;
+}
+
+/* Hero Section */
+.hero-section {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 100px 0;
+    text-align: center;
+    border-radius: 0 0 50px 50px;
+    margin-bottom: 50px;
+}
+
+.hero-section h1 {
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.hero-section p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+/* Features */
+.feature-icon {
+    width: 80px;
+    height: 80px;
+    background: var(--gradient-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    color: white;
+    font-size: 2rem;
+}
+
+/* Forms */
+.form-control {
+    border-radius: 15px;
+    padding: 12px 20px;
+    border: 2px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(255, 107, 53, 0.25);
+}
+
+/* Results */
+.result-card {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.confidence-bar {
+    height: 20px;
+    background: #e9ecef;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 10px 0;
+}
+
+.confidence-fill {
+    height: 100%;
+    background: var(--gradient-primary);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
+/* Footer */
+.custom-footer {
+    background: var(--dark-color);
+    color: white;
+    padding: 40px 0;
+    margin-top: 50px;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.6s ease;
+}
+
+/* Upload Area */
+.upload-area {
+    border: 3px dashed #ff6b35;
+    border-radius: 20px;
+    padding: 60px 20px;
+    text-align: center;
+    background: rgba(255, 107, 53, 0.05);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.upload-area:hover {
+    background: rgba(255, 107, 53, 0.1);
+    border-color: #ff8c00;
+}
+
+.upload-area i {
+    font-size: 4rem;
+    color: #ff6b35;
+    margin-bottom: 20px;
+}
+
+/* Remedies */
+.remedy-card {
+    border-left: 5px solid var(--primary-color);
+    transition: all 0.3s ease;
+}
+
+.remedy-card:hover {
+    border-left-color: var(--secondary-color);
+    transform: translateX(5px);
+}
+
+/* Dashboard Stats */
+.stat-card {
+    text-align: center;
+    padding: 30px 20px;
+}
+
+.stat-number {
+    font-size: 3rem;
+    font-weight: bold;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-section h1 {
+        font-size: 2.5rem;
+    }
+    
+    .hero-section {
+        padding: 60px 0;
+    }
+}
+/* Additional styles for new templates */
+.step-number {
+    width: 50px;
+    height: 50px;
+    background: var(--gradient-primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.feature-icon-lg {
+    width: 80px;
+    height: 80px;
+}
+
+.tech-item, .feature-card, .contact-info {
+    transition: all 0.3s ease;
+}
+
+.tech-item:hover, .feature-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Progress bar animations */
+.progress-bar {
+    transition: width 1s ease-in-out;
+}
+
+/* List group enhancements */
+.list-group-item {
+    transition: all 0.3s ease;
+}
+
+/* Card hover effects */
+.custom-card {
+    transition: all 0.3s ease;
+}
+
+.custom-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+    
+    .display-4 {
+        font-size: 2.5rem;
+    }
+    
+    .stat-number {
+        font-size: 2rem;
+    }
+}
